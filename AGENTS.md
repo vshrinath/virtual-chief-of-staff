@@ -5,23 +5,30 @@ Execute each step in order. Confirm each step succeeded before proceeding.
 
 ---
 
-## Prerequisites Check
+## Step 1: Platform-Specific Core Setup
 
-Run these commands and confirm each succeeds:
+Check the user's operating system and choose the correct setup path:
 
+### 🪟 Windows Setup
+Run this automated script to install `uv` and `ffmpeg` (via winget):
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup-windows.ps1
+```
+*Note: The user may need to restart their terminal after this step.*
+
+### 🍎 Mac / 🐧 Linux Setup
+Run these commands:
 ```bash
 python3 --version   # need 3.11+
-uv --version        # need uv installed
-```
-
-If `uv` is missing, install it:
-```bash
+# Install uv if missing
 curl -LsSf https://astral.sh/uv/install.sh | sh
+# Install ffmpeg if missing (Mac)
+brew install ffmpeg
 ```
 
 ---
 
-## Step 0: Proactive Triage
+## Step 2: Proactive Triage
 
 Before you begin, introduce yourself to the user and ask these two questions to determine the setup path:
 
@@ -30,7 +37,7 @@ Before you begin, introduce yourself to the user and ask these two questions to 
 
 ---
 
-## Step 1: Install the Package
+## Step 3: Install the Package
 
 Based on the user's choice:
 
@@ -84,7 +91,7 @@ Ask the user for their API keys. Or, tell them:
 ## Step 4: Install and Initialize MemPalace
 
 ```bash
-pip install mempalace
+uv tool install mempalace
 mempalace init ~/.mempalace/palace
 ```
 
@@ -141,7 +148,8 @@ The system is ready. Tell the user:
 
 | Error | Fix |
 |---|---|
-| `VCOS_VAULT_PATH is not set` | Check `.env` is loaded — run `source <vault>/.env` |
+| `VCOS_VAULT_PATH is not set` | Check `.env` is loaded — run `source <vault>/.env` (Mac) or `$env:VCOS_VAULT_PATH="..."` (Windows) |
 | `mempalace: command not found` | Run `pip install mempalace` |
 | `vcos: command not found` | Re-run `uv tool install ...` |
 | `vault path does not exist` | Run `vcos init --vault <path>` first |
+| `powershell execution error` | Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` |
