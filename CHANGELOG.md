@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-14] — Self-Documenting Help System & Integration Helpers
+
+**Branch**: `main`
+
+### What changed
+- **`vcos help [QUERY]`**: New command for strategic semantic search over the internal system manual.
+- **`vcos config mcp`**: New command to generate JSON configuration blocks for Claude Code and Antigravity.
+- **System Manual**: Bootstrapped a library of guides (`claude-code.md`, `nanoclaw.md`, `antigravity.md`) into the user's vault.
+- **Improved Init**: `vcos init` now automatically deploys the documentation system.
+
+### Why
+To ensure that a clueless user can find answers about integrations (Claude, NanoClaw, Antigravity) without leaving the terminal. This transforms the VCoS from a "package" into a "self-explaining system."
+
+### Files touched
+- `src/vcos/cli.py` — Added `help` and `config mcp` commands.
+- `src/vcos/data/help/` — [NEW] directory for manual content.
+- `AGENTS.md` — Updated with setup instructions for the help system.
+
 ## [2026-04-14] — Windows Support & Handover Automation
 
 **Branch**: `main`
