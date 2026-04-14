@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "vcos"
+version = "0.1.0"
+description = "Virtual Chief of Staff — a personal intelligence system built on Markdown"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+
+dependencies = [
+    "click>=8.1",
+    "python-dotenv>=1.0",
+    "openai>=1.0",
+    "anthropic>=0.25",
+    "requests>=2.31",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "markitdown>=0.1",
+    "mempalace",
+]
+
+[project.scripts]
+vcos = "vcos.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+vcos = [
+    "data/scaffold/**/.gitkeep",
+    "data/advisors/*.md",
+]
