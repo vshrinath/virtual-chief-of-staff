@@ -22,6 +22,12 @@ dependencies = [
     "mempalace",
 ]
 
+[project.optional-dependencies]
+whisper = [
+    "openai-whisper",
+    "torch",
+]
+
 [project.scripts]
 vcos = "vcos.cli:main"
 

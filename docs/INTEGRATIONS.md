@@ -16,6 +16,19 @@ If you use [NanoClaw](https://github.com/vshrinath/nanoclaw) or a custom Go/Pyth
 vcos archive --content "$TRANSCRIPT" --path "writing/articles/1-inbox/$(date +%Y-%m-%d).md"
 ```
 
+### Local Whisper Workflow (Highly Private)
+If you install the `[whisper]` version of VCoS, you can handle transcription on your own machine without sending audio to an cloud provider.
+
+**Workflow:**
+1. **NanoClaw** captures the audio file (e.g., `recording.m4a`).
+2. **NanoClaw** (or a local script) calls `vcos transcribe`:
+   ```bash
+   vcos transcribe recording.m4a --archive
+   ```
+3. **VCoS** transcribes the file and automatically saves it to your `writing/articles/1-inbox/` with the correct frontmatter.
+
+*Note: This requires FFmpeg installed on your system.*
+
 ### OpenClaw
 [OpenClaw](https://github.com/MemPalace/mempalace) is a bridge developed by the MemPalace team. Since VCoS uses MemPalace for memory, you can point OpenClaw directly at your palace index:
 

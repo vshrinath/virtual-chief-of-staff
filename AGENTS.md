@@ -21,10 +21,31 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ---
 
+## Step 0: Proactive Triage
+
+Before you begin, introduce yourself to the user and ask these two questions to determine the setup path:
+
+1. **Lean vs. Full?**: "Do you want to process voice notes locally? (Requires ~2GB disk space for Whisper/Torch). If yes, I'll install the 'Full' version. If no, the 'Lean' version."
+2. **Bridge Integration?**: "Do you want to hook this up to WhatsApp or Slack right now? I can help you configure a bridge like NanoClaw."
+
+---
+
 ## Step 1: Install the Package
 
+Based on the user's choice:
+
+### Lean Version
 ```bash
-uv tool install git+https://github.com/yourusername/virtual-chief-of-staff
+uv tool install git+https://github.com/vshrinath/virtual-chief-of-staff
+```
+
+### Full Version (Whisper)
+```bash
+uv tool install "vcos[whisper] @ git+https://github.com/vshrinath/virtual-chief-of-staff"
+```
+
+Then confirm:
+```bash
 vcos --help   # confirm install succeeded
 ```
 
@@ -55,7 +76,8 @@ FATHOM_API_KEY=<ask the user — optional, only needed for meeting minutes>
 MEMPALACE_PALACE_PATH=~/.mempalace/palace
 ```
 
-Ask the user for their API keys. They should have at least one of Anthropic or OpenAI.
+Ask the user for their API keys. Or, tell them: 
+> "I can help you get these keys. Run `vcos auth` and I'll open the provider dashboards for you."
 
 ---
 
@@ -73,14 +95,13 @@ mempalace mine <vault-path> --wing personal
 
 ---
 
-## Step 5: Verify
+## Step 5: Verify & Diagnose
 
 ```bash
-vcos retrieve "test"
+vcos status
 ```
 
-Expected: no results — but no error. If you get an error, check that `VCOS_VAULT_PATH`
-is set in the `.env` and that the vault path exists.
+This command will check the vault, the memory index, and the API keys. Follow its recommendations if anything is missing.
 
 ---
 

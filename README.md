@@ -26,6 +26,7 @@ Read the design story: [Article 1] · [Article 2] · [Article 3]
 - Python 3.11+
 - `uv` ([install](https://docs.astral.sh/uv/getting-started/installation/))
 - An API key — Anthropic or OpenAI (or both)
+- **FFmpeg** (required if using local transcription/Whisper — `brew install ffmpeg`)
 - A WhatsApp bridge — [NanoClaw](https://github.com/nanoclaw) or [OpenClaw](https://github.com/MemPalace/mempalace/tree/develop/integrations/openclaw) (optional, for voice capture)
 - Fathom API key (optional, for meeting minutes via Fathom)
 
@@ -33,8 +34,14 @@ Read the design story: [Article 1] · [Article 2] · [Article 3]
 
 ## Install
 
+### Lean Path (Recommended / Fast)
 ```bash
 uv tool install git+https://github.com/vshrinath/virtual-chief-of-staff
+```
+
+### Full Path (with local Whisper transcrption)
+```bash
+uv tool install "vcos[whisper] @ git+https://github.com/vshrinath/virtual-chief-of-staff"
 ```
 
 ---

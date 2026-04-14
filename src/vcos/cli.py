@@ -175,3 +175,46 @@ def standup():
     """Generate your morning briefing from vault activity."""
     from vcos.skills.standup import run
     run()
+
+
+# ---------------------------------------------------------------------------
+# vcos status
+# ---------------------------------------------------------------------------
+
+@main.command()
+@click.pass_context
+def status(ctx):
+    """Diagnose the VCoS environment and health."""
+    from vcos.skills.status import status as _status
+    ctx.invoke(_status)
+
+
+# ---------------------------------------------------------------------------
+# vcos auth
+# ---------------------------------------------------------------------------
+
+@main.command()
+@click.option("--key-type", type=click.Choice(["anthropic", "openai"]), help="Provider")
+def auth(key_type):
+    """Guide the user through API key configuration."""
+    from vcos.skills.auth import auth as _auth
+    import sys
+    # Re-triggering Click's context for sub-command
+    from click.testing import CliRunner
+    # Actually just calling the function is cleaner if we pass the param
+    _auth.callback(key_type)
+
+
+# ---------------------------------------------------------------------------
+# vcos transcribe
+# ---------------------------------------------------------------------------
+
+@main.command()
+@click.argument("audio_path", type=click.Path(exists=True))
+@click.option("--model", default="base", help="Whisper model (tiny, base, small, medium, large)")
+@click.option("--archive", is_flag=True, help="Auto-archive to inbox")
+@click.pass_context
+def transcribe(ctx, audio_path, model, archive):
+    """Transcribe an audio file locally using Whisper."""
+    from vcos.skills.transcribe import transcribe as _transcribe
+    ctx.invoke(_transcribe, audio_path=audio_path, model=model, archive=archive)
