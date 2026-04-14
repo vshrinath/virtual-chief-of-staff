@@ -13,6 +13,12 @@ Built on:
 
 Read the design story: [Article 1] · [Article 2] · [Article 3]
 
+## Documentation
+
+- [AGENTS.md](./AGENTS.md) — How to set this up using an AI assistant.
+- [INTEGRATIONS.md](./docs/INTEGRATIONS.md) — Hooking up WhatsApp (NanoClaw) and AI Agents (MCP).
+- [CLAUDE.md](./CLAUDE.md) — Quick reference for Claude Code users.
+
 ---
 
 ## What You Need
@@ -28,7 +34,7 @@ Read the design story: [Article 1] · [Article 2] · [Article 3]
 ## Install
 
 ```bash
-uv tool install git+https://github.com/yourusername/virtual-chief-of-staff
+uv tool install git+https://github.com/vshrinath/virtual-chief-of-staff
 ```
 
 ---
