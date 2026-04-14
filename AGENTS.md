@@ -86,6 +86,13 @@ MEMPALACE_PALACE_PATH=~/.mempalace/palace
 Ask the user for their API keys. Or, tell them: 
 > "I can help you get these keys. Run `vcos auth` and I'll open the provider dashboards for you."
 
+### Connect to Claude / Antigravity
+To hook this system up to other agents, run:
+```bash
+vcos config mcp
+```
+This generates the JSON block for `mcp_config.json`. Help the user copy-paste this into their agent settings.
+
 ---
 
 ## Step 4: Install and Initialize MemPalace
@@ -95,9 +102,10 @@ uv tool install mempalace
 mempalace init ~/.mempalace/palace
 ```
 
-Then mine the vault to build the initial index:
+Then mine the vault to build the initial index, including the system manual:
 ```bash
-mempalace mine <vault-path> --wing personal
+mempalace mine <vault-path>/projects --wing personal
+mempalace mine <vault-path>/system/docs --project system --wing system
 ```
 
 ---
@@ -106,9 +114,10 @@ mempalace mine <vault-path> --wing personal
 
 ```bash
 vcos status
+vcos help "getting started"
 ```
 
-This command will check the vault, the memory index, and the API keys. Follow its recommendations if anything is missing.
+This will confirm the system is healthy and the manual is searchable.
 
 ---
 

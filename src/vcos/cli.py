@@ -62,11 +62,21 @@ def init(vault):
         shutil.copy(marshall_src, marshall_dst)
         click.echo(f"✅ Example advisor (Marshall) copied to {marshall_dst}")
 
+    # Bootstrap Help Documentation
+    help_dir = vault_path / "system" / "docs"
+    help_src = Path(__file__).parent / "data" / "help"
+    if help_src.exists():
+        if help_dir.exists():
+            shutil.rmtree(help_dir)
+        shutil.copytree(help_src, help_dir)
+        click.echo(f"✅ Help manual bootstrapped to {help_dir}")
+
     click.echo("\nNext steps:")
     click.echo(f"  1. Fill in API keys in {env_file}")
-    click.echo("  2. Run: pip install mempalace && mempalace init ~/.mempalace/palace")
-    click.echo(f"  3. Run: mempalace mine {vault_path} --wing personal")
-    click.echo("  4. Run: vcos retrieve 'test' to verify")
+    click.echo("  2. Run: vcos config mcp  (to connect Claude/Antigravity)")
+    click.echo("  3. Run: uv tool install mempalace && mempalace init ~/.mempalace/palace")
+    click.echo(f"  4. Run: mempalace mine {vault_path} --wing personal")
+    click.echo("  5. Run: vcos help 'getting started' to explore the manual")
 
 
 # ---------------------------------------------------------------------------
@@ -218,3 +228,72 @@ def transcribe(ctx, audio_path, model, archive):
     """Transcribe an audio file locally using Whisper."""
     from vcos.skills.transcribe import transcribe as _transcribe
     ctx.invoke(_transcribe, audio_path=audio_path, model=model, archive=archive)
+
+
+# ---------------------------------------------------------------------------
+# vcos help
+# ---------------------------------------------------------------------------
+
+@main.command()
+@click.argument("query", required=False)
+def help(query):
+    """Search the VCoS manual for integration and usage guides."""
+    if not query:
+        click.echo("Usage: vcos help <query>")
+        click.echo("Examples: 'vcos help claude', 'vcos help nanoclaw'")
+        return
+
+    from vcos.skills.retrieve import search
+    import os
+    
+    # We search specifically in the 'system' project where help docs are tagged
+    # Note: 'system' tag should be added during mempalace mine
+    results = search(query, limit=3, project="system")
+
+    if not results:
+        click.echo("No help found for that query. Try 'vcos help overview'.")
+        return
+
+    for res in results:
+        source_name = os.path.basename(res["source"]) if res.get("source") else "manual"
+        click.echo(f"\n📚 --- Manual: {source_name} ---")
+        click.echo(res["content"])
+
+
+# ---------------------------------------------------------------------------
+# vcos config
+# ---------------------------------------------------------------------------
+
+@main.group()
+def config():
+    """Configuration helpers."""
+    pass
+
+
+@config.command()
+@click.option("--agent", type=click.Choice(["claude", "antigravity"]), default="claude")
+def mcp(agent):
+    """Generate the JSON config for MCP agents (Claude Code, Antigravity)."""
+    from vcos.config import get_palace_path
+    import json
+    
+    try:
+        palace = get_palace_path()
+    except RuntimeError:
+        palace = "/path/to/your/vcos/palace"
+
+    config_obj = {
+        "vcos-memory": {
+            "command": "uvx",
+            "args": ["mempalace-mcp"],
+            "env": {
+                "MEMPALACE_PALACE_PATH": str(palace)
+            }
+        }
+    }
+    
+    click.echo(f"\nCopy this block into your mcp_config.json for {agent}:\n")
+    click.echo(json.dumps(config_obj, indent=2))
+    click.echo("\nLocation of mcp_config.json:")
+    click.echo("- Mac: ~/Library/Application Support/Claude/mcp_config.json")
+    click.echo("- Windows: %APPDATA%\\Claude\\mcp_config.json")
