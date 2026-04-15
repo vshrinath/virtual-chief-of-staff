@@ -27,6 +27,9 @@ whisper = [
     "openai-whisper",
     "torch",
 ]
+youtube = [
+    "yt-dlp",
+]
 
 [project.scripts]
 vcos = "vcos.cli:main"

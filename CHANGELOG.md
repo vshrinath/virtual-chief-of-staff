@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-15] — YouTube "Clean Workflow" & Vault Hygiene
+
+**Branch**: `main`
+
+### What changed
+- **`vcos youtube [URL]`**: New skill to fetch transcripts and metadata.
+- **Intermediates Pattern**: Implemented the "raw/" storage pattern for noisy transcripts.
+- **`--cleanup`**: Added a destructive cleanup command to purge `raw/` files after processing.
+- **Vault Hygiene**: Updated `vcos init` to scaffold a `.gitignore` that automatically excludes `raw/` folders from MemPalace indexing.
+- **Optional Dependency**: Added `yt-dlp` as an optional extra (`vcos[youtube]`).
+
+### Why
+To keep the knowledge graph clean. Users can now ingest long YouTube transcripts for analysis without permanently cluttering their semantic memory with the noisy raw text.
+
+### Files touched
+- `src/vcos/skills/youtube.py` — [NEW] YouTube processor.
+- `src/vcos/cli.py` — Registered `youtube` command and updated `init`.
+- `pyproject.toml` — Added `yt-dlp` dependency.
+- `AGENTS.md` — Documented the clean workflow.
+
 ## [2026-04-14] — Self-Documenting Help System & Integration Helpers
 
 **Branch**: `main`

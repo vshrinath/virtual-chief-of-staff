@@ -71,6 +71,12 @@ def init(vault):
         shutil.copytree(help_src, help_dir)
         click.echo(f"✅ Help manual bootstrapped to {help_dir}")
 
+    # Vault Hygiene (.gitignore)
+    gitignore = vault_path / ".gitignore"
+    if not gitignore.exists():
+        gitignore.write_text("**/raw/\n*.txt\n*.json\n*.vtt\n")
+        click.echo(f"✅ Vault hygiene configured (.gitignore excludes raw folders)")
+
     click.echo("\nNext steps:")
     click.echo(f"  1. Fill in API keys in {env_file}")
     click.echo("  2. Run: vcos config mcp  (to connect Claude/Antigravity)")
@@ -297,3 +303,20 @@ def mcp(agent):
     click.echo("\nLocation of mcp_config.json:")
     click.echo("- Mac: ~/Library/Application Support/Claude/mcp_config.json")
     click.echo("- Windows: %APPDATA%\\Claude\\mcp_config.json")
+
+
+# ---------------------------------------------------------------------------
+# vcos youtube
+# ---------------------------------------------------------------------------
+
+@main.command()
+@click.argument("url", required=False)
+@click.option("--save-dir", help="Vault subdirectory (default: 'youtube')")
+@click.option("--cleanup", help="Directory name to clean raw/ from")
+def youtube(url, save_dir, cleanup):
+    """Fetch YouTube transcripts and metadata with a clean workflow."""
+    from vcos.skills.youtube import youtube as _youtube
+    import sys
+    # Calling the command function directly
+    from click.testing import CliRunner
+    _youtube.callback(url, save_dir, cleanup)

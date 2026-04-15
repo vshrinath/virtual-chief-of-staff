@@ -143,7 +143,19 @@ and run through `vcos archive`.
 
 ---
 
-## Done
+## YouTube "Clean Workflow"
+
+To process a YouTube video without cluttering your system memory:
+
+1. **Fetch**: `vcos youtube <URL> --save-dir research`
+   - This downloads the transcript and metadata to `research/raw/`.
+2. **Process**: Ask the agent (Claude/Antigravity) to read the transcript in the `raw/` folder and write a clean summary to `research/article-name.md`.
+3. **Clean**: `vcos youtube --cleanup research`
+   - This deletes the `raw/` folder. The system is configured to ignore `raw/` folders during indexing, so your knowledge graph stays clean.
+
+---
+
+## Decision Ledger
 
 The system is ready. Tell the user:
 
